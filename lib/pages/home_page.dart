@@ -2,37 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:matjry/widgets/image_carousel.dart';
 import '../widgets/section_title.dart';
 import '../widgets/product_list.dart';
-import '../widgets/slide_menu.dart'; // Import the SlideMenu
-import '../widgets/bottom_navigation.dart'; // Import the BottomNavigation
+import '../widgets/slide_menu.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
-
-  void _onTap(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    // Handle navigation based on index
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.shopping_cart_outlined),
-          onPressed: () {
-            // Handle cart icon press
-          },
-          color: Colors.black,
-        ),
+        leading:  Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              color: Colors.grey,
+            ),
+          ),
         title: TextField(
           decoration: InputDecoration(
             hintText: 'بحث...',
@@ -40,26 +27,23 @@ class _HomePageState extends State<HomePage> {
           ),
           textAlign: TextAlign.right,
         ),
-        actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-                color: Colors.black,
-              );
-            },
-          ),
+        actions: [ IconButton(
+          icon: Icon(Icons.shopping_cart_outlined),
+          onPressed: () {
+            // Handle cart icon press
+          },
+          color: Colors.grey,
+        ),
+
+        
         ],
       ),
-      endDrawer: SlideMenu(), // Add the SlideMenu
+      endDrawer: SlideMenu(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselWithIndicator(), // Updated widget name
+            CarouselWithIndicator(),
             SectionTitle(title: 'الوجه'),
             ProductList(category: 'face'),
             SectionTitle(title: 'فرش و أدوات المكياج'),
@@ -68,10 +52,6 @@ class _HomePageState extends State<HomePage> {
             ProductList(category: 'brows'),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: _onTap,
       ),
     );
   }
